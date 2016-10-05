@@ -7,7 +7,7 @@ from py2neo import Node, Relationship, Graph, authenticate
 authenticate("localhost:7474", "neo4j", "scibase")
 graph = Graph("http://localhost:7474/db/data")
 from datetime import datetime
-startTime = datetime.now()
+
 
 def continent(temp):
 	with open('InstituteCountryContinent.csv') as journal_file:
@@ -28,7 +28,7 @@ def continent(temp):
 
 # Change the value of directory to the path where data to be pushed is stored
 path = []
-directory = '/home/sourav/Documents/Temp_codes/Finalized_structure'
+directory = '/home/sourav/Documents/Temp_codes/Push_Journal/Journals'
 for filename in os.listdir(directory):
 	if filename.endswith(".json"):
 		x = os.path.join(directory, filename)
@@ -43,7 +43,7 @@ for journals in path:
 		count += 1
 		#print json1.items()
 		print(count)
-
+		startTime = datetime.now()
 
 #with open('TAP.json') as data_file:
 #	json1 = json.load(data_file)   
@@ -51,6 +51,7 @@ for journals in path:
 #for better clarity add print statement to check each key and value pair
 		tx = graph.begin()
 		for key,value in json1.items():
+
 			print(key)
 			j=Node("Journal",Acronymn=key)
 			tx.merge(j)
@@ -77,9 +78,9 @@ for journals in path:
 								for key_5,value_5 in value_4.items():						
 										if value_5['title'] is not None:
 											cnt+=1
-											print(cnt)
+											#print(cnt)
 											var = value_5['title']
-											print(var)											
+											#print(var)											
 											ar=Node("Article",Title=var)
 											tx.merge(ar)
 											ar['Year'] = y
@@ -219,4 +220,4 @@ with open('self citation list (1)_good.csv') as journal_file:
 				#print(key)
 
 	tx.commit()
-print(datetime.now() - startTime)
+	print(datetime.now() - startTime)
